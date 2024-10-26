@@ -1,0 +1,207 @@
+<?php
+require_once('config.php');
+session_start();
+error_reporting(0);
+if (isset($_SESSION['Username'])) {
+  $_username = $_SESSION['Username'];
+}
+?>
+<?php
+$user = $_SESSION['Username'];
+$result = mysqli_query($conn, "select * from user where Username='$user'") or die(mysqli_error($conn));
+$row = mysqli_fetch_array($result);
+$accountid = $row['Username'];
+$name = $row['Name'];
+?>
+<html>
+
+<head>
+  <link rel="stylesheet" href="css/mu.css" type="text/css">
+  <script type="text/javascript">
+    if (document.images) { // Preloaded images
+      demo1 = new Image();
+      demo1.src = "image/A.png";
+      demo2 = new Image();
+      demo2.src = "image/1.png";
+      demo3 = new Image();
+      demo3.src = "image/2.png";
+      demo4 = new Image();
+      demo4.src = "image/3.png";
+    }
+
+    function timeimgs(numb) { // Reusable timer
+      thetimer = setTimeout("imgturn('" + numb + "')", 1500);
+    }
+
+    function imgturn(numb) { // Reusable image turner
+      if (document.images) {
+
+        if (numb == "4") { // This will loop the image
+          document["im"].src = eval("demo4.src");
+          timeimgs('1');
+        } else {
+          document["im"].src = eval("im" + numb + ".src");
+
+          timeimgs(numb = ++numb);
+        }
+      }
+    }
+  </script>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <style type="text/css">
+    <!--
+    body {
+      background-color: #eee;
+      margin-left: 60px;
+      margin-right: 40px;
+    }
+    -->
+  </style>
+</head>
+
+<body onLoad="timeimgs('1');">
+  <br>
+  <table border="0" width="97%" cellspacing="0">
+    <tr>
+    <td colspan="3"><img src="image/f.gif" width="15%" height="140"><img src="image/dk.jpg" width="70%" height="140"><img src="image/Flag_of_Southern_Ethiopia.png" width="15%" height="140"></td>
+    </tr>
+    <tr>
+      <td id="dropdown" colspan="3">
+        <li><a href="charman.php"><b>Home</b></a></li>
+        <li><a href="#"><em><strong>Prepare </em></a>
+          <ul class="sub1">
+            <li><a href="clearance.php"><b><i>Clearance </i></b></a></li>
+            <li><a href="display_residnet.php"><b><i>Idcard </i></b></a></li>
+
+          </ul>
+        </li>
+        <li><a href="replay1.php"><strong>Send replay </strong></a></li>
+
+        <li><a href="#"><em><strong>Generate report</strong> </em></a>
+          <ul class="sub1">
+            <li><a href="#"><b><i>Clearance report</i></b></a>
+              <ul class="">
+                <li><a href="clearancereport.php"><b><i>Daylly report</i></b></a></li>
+                <li><a href="sex_report.php"><b><i> Sex Report</i></b></a></li>
+            </li>
+          </ul>
+        <li><a href="idcardreport.php"><b><i>Idcard report</i></b></a>
+          <ul class="">
+            <li><a href="clearancereport.php"><b><i>Daylly report</i></b></a></li>
+            <li><a href="sex_report.php"><b><i>Sex Report </i></b></a></li>
+        </li>
+        </ul>
+        </ul>
+        </li>
+        <li><a href="#"><em><strong>News</strong> </em></a>
+          <ul class="sub1">
+            <li><a href="postnew.php"><b><i>Post News </i></b></a></li>
+            <li><a href="update_news.php"><b><i>Update news </i></b></a></li>
+          </ul>
+        </li>
+        <li>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;</li>
+        <li><a href="change_pass_charman.php"><b>Change password</b></a></li>
+        <li><a href="Logout.php"><b>Logout</b></a></li>
+      </td>
+    </tr>
+    <tr>
+      <td width="1086">
+        <table border="0" bgcolor="#CCCCCC" cellspacing="0">
+          <tr>
+            <td width="250" height="600" valign="top">
+              <table border="0" width="250" cellspacing="0">
+                <tr>
+                  <td id="topnav">
+                    <li><a href="giveidcard.php"><strong>View id card </strong></a></li>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="topnav">
+                    <li><a href="view_resident.php"><strong>View resident </strong></a></li>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="topnav">
+                    <li><a href="viewcomment.php"><strong>View comment</strong> </a></li>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="topnav">
+                    <li><a href="viewclearance.php"><strong>View clearance </strong></a></li>
+                  </td>
+                </tr>
+                <tr>
+                  <td id="topnav">
+                    <li><a href=""><b> </b></a></li>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            </script>
+            <td width="868" height="600" valign="top" bgcolor="white"><br>
+
+
+              <?php
+              $result = mysqli_query($conn,"SELECT * FROM request ");
+
+
+              echo "<table id='vtable' style='width:300px;border:1px solid #336699;' align='center' valign='top' align='left'><font color=white>
+<tr>
+<th bgcolor='#336699'><font color='white' size='2'>  requst sender name </th>
+</tr>";
+
+              while ($row = mysqli_fetch_array($result)) {
+                $ctrl = $row['name'];
+
+
+                echo "<tr>";
+                print("<td align = 'left' width = '1' color='red'><a href = 'viewrequestdetail.php?key1=" . $ctrl . "'>$ctrl</a></td>");
+
+                echo ("</tr>");
+              }
+              echo ("</table>");
+
+              mysqli_close($conn);
+              ?>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td width="0"></td>
+      <td width="209" height="600" valign="top" bgcolor="white">
+  </table>
+  </td>
+  </tr>
+  </tr>
+  <tr>
+    <td colspan="3" height="25">
+      <table border="0" align="center" width="100%" bgcolor="#CCCCCC" cellspacing="0">
+        <tr>
+          <td>
+            <a href="http://www.facebook.com" target="_blank"><img src="image/facebook.png" title="Facebook" width="40" height="30"></a>
+            <a href="http://www.google.com" target="_blank"><img src="image/google-map.png" title="Google" width="30" height="25"></a>
+            <a href="http://twitter.com" target="_blank"><img src="image/twitter.gif" title="Twitter" width="40" height="30"></a>
+            <a href="youtube.html" target="_blank"><img src="image/youtube.png" title="YouTube" width="40" height="30"></a>
+          </td>
+          <td>
+            <font face="Times New Roman" color="black"><b>DURAME CITY RESIDENCE RECORD MANAGMENT SYSTEM &copy; 2024 COPY
+                RIGHT RESERVED !!!</b>
+            </font>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  </table>
+</body>
+
+</html>

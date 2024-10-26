@@ -1,0 +1,519 @@
+<?php
+require_once('config.php');
+session_start();
+error_reporting(0);
+if (isset($_SESSION['Username'])) {
+	$_username = $_SESSION['Username'];
+} else if (!isset($_SESSION['Username'])) {
+	header("location:home.php");
+}
+?>
+<?php
+$user = $_SESSION['Username'];
+$result = mysqli_query($conn, "select * from user where Username='$user'") or die(mysqli_error($conn));
+$row = mysqli_fetch_array($result);
+$accountid = $row['Username'];
+$fname = $row['frist_name'];
+$mname = $row['mname'];
+$lname = $row['lname'];
+$ful = $fname . " " . $mname;
+?>
+
+<html>
+
+<head>
+	<link rel="stylesheet" href="css/mu.css" type="text/css">
+	<script type="text/javascript">
+		if (document.images) { // Preloaded images
+			demo1 = new Image();
+			demo1.src = "image/A.png";
+			demo2 = new Image();
+			demo2.src = "image/1.png";
+			demo3 = new Image();
+			demo3.src = "image/2.png";
+			demo4 = new Image();
+			demo4.src = "image/3.png";
+		}
+
+		function timeimgs(numb) { // Reusable timer
+			thetimer = setTimeout("imgturn('" + numb + "')", 1500);
+		}
+
+		function imgturn(numb) { // Reusable image turner
+			if (document.images) {
+
+				if (numb == "4") { // This will loop the image
+					document["im"].src = eval("demo4.src");
+					timeimgs('1');
+				} else {
+					document["im"].src = eval("im" + numb + ".src");
+
+					timeimgs(numb = ++numb);
+				}
+			}
+		}
+	</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<style type="text/css">
+		<!--
+		body {
+			background-color: #eee;
+			margin-left: 140px;
+			margin-right: 50px;
+			margin-bottom: 0px
+		}
+		-->
+	</style>
+</head>
+
+<body onLoad="timeimgs('1');">
+	<br>
+	<table border="0" width="92%" cellspacing="0">
+		<?php
+		$result = mysqli_query($conn,"SELECT * FROM noti where content='Please Deactivate this user account.' and seen=0");
+		$num = mysqli_num_rows($result);
+		?>
+		<table border="0" width="92%" cellspacing="0">
+			<tr>
+			<td colspan="3"><img src="image/f.gif" width="15%" height="150"><img src="image/dk.jpg" width="70%" height="150"><img src="image/Flag_of_Southern_Ethiopia.png" width="15%" height="150"></td>
+			</tr>
+			<tr>
+				<td id="dropdown" colspan="3">
+					<li><b><a href="admin.php"><img src="image/home.PNG" width="20">Home </a></li>
+					<li><a href="addemp.php"><b><img src="image/ch.jpg" width="20" height="17">Add Employee</b></a></li>
+					<li><a href="change_password.php"><img src="image/g.png" width="25" height="17"><b>Change Password</b></a></li>
+					<li><a href="viewuser.php"><b><img src="image/m1.gif" width="25" height="20">Manage User</b></a></li>
+					<li><a href="adminnotfication.php"><b><img src="image/mail.PNG" width="25" height="20">Notifcation<font color="blue">(<?php echo $num; ?>)</font></b></a></li>
+					<li>
+
+					</li>
+					<li>login as <font color='blue'><?php echo $ful; ?></font>
+					</li>
+
+					<li><a href="Logout.php">(Logout)</a></li>
+				</td>
+			</tr>
+			<tr>
+				<td width="252" height='300'>
+					<table border="0" bgcolor="#CCCCCC" cellspacing="0" valign="top">
+						<tr>
+							<td width="270" height="690" valign="top">
+								<table border="0" width="259" cellspacing="0">
+									<tr>
+										<?php
+										$sql = "SELECT * FROM `user` WHERE Username='$_username'";
+										$res = mysqli_query($conn,$sql);
+										while ($row = mysqli_fetch_array($res)) {
+											$profile = $row['profile'];
+
+											# code...
+										}
+										if (!$profile) {
+											echo "<td  align='lefet' colspan='2' style='background: #eee'><img src='image/ma.jpg' style='border-radius: 80%;width: 130px;height: 100px;'>
+
+";
+										} else {
+											echo "<td  align='lefet' colspan='2' style='background: #eee'><img src='downlod/photo/$profile' style='border-radius: 80%;width: 130px;height: 100px;'>
+";
+										}
+										?>
+										<br>
+										<font color="blue"><a href="adprofile.php"><img src="image/activate.png"><?php echo $ful; ?>(change profile)</a></font>
+							</td>
+						</tr>
+						<tr bgcolor="#606060">
+							<td align="left" bgcolor="">
+								<b>
+									<font color='white'>Calander
+								</b></font>
+						</tr>
+						<tr bgcolor="#FFFFFF">
+							<td>
+								<script language="JavaScript">
+									<!-- hide code
+									// this array gives the weekday names
+									var Weekday = new Array();
+									Weekday[0] = "Sunday";
+									Weekday[1] = "Monday";
+									Weekday[2] = "Tuesday";
+									Weekday[3] = "Wednesday";
+									Weekday[4] = "Thursday";
+									Weekday[5] = "Friday";
+									Weekday[6] = "Saturday";
+									// this array gives month names
+									var MonthA = new Array();
+									MonthA[0] = "January";
+									MonthA[1] = "February";
+									MonthA[2] = "March";
+									MonthA[3] = "April";
+									MonthA[4] = "May";
+									MonthA[5] = "June";
+									MonthA[6] = "July";
+									MonthA[7] = "August";
+									MonthA[8] = "September";
+									MonthA[9] = "October";
+									MonthA[10] = "November";
+									MonthA[11] = "December";
+									// this array gives the number of days in each month
+									var Mdays = new Array();
+									Mdays[0] = 31;
+									Mdays[1] = 28;
+									Mdays[2] = 31;
+									Mdays[3] = 30;
+									Mdays[4] = 31;
+									Mdays[5] = 30;
+									Mdays[6] = 31;
+									Mdays[7] = 31;
+									Mdays[8] = 30;
+									Mdays[9] = 31;
+									Mdays[10] = 30;
+									Mdays[11] = 31;
+									// this code gets current date information
+									var Today = new Date();
+									var Date = Today.getDate();
+									var Month = Today.getMonth();
+									var dow = Today.getDay();
+									var Year = Today.getYear();
+									// these are variables for 
+									var day = 1;
+									var i, j;
+									// adjust year for browser differences
+									if (Year < 2000) {
+										Year += 1900;
+									}
+									// account for leap year
+									if ((Year % 400 == 0) || ((Year % 4 == 0) && (Year % 100 != 0)))
+										Mdays[1] = 29;
+									// determine day of week for first day of the month
+									var Mfirst = Today;
+									Mfirst.setDate(1);
+									var dow1 = Mfirst.getDay();
+									// write out current date
+									document.write("Today is " + Weekday[dow] + ", " + MonthA[Month]);
+									document.write(" " + Date + ", " + Year);
+									// construct calendar for current month
+									document.write("<BR><BR><TABLE BORDER=0 BORDERCOLOR=INDIGO>" +
+										"<TR><TH COLSPAN=7 ALIGN=CENTER>" + MonthA[Month] + " " + Year + "</TH></TR>");
+									document.write("<TR><TH>Sun</TH><TH>Mon</TH><TH>Tue</TH><TH>Wed</TH>" +
+										"<TH>Thu</TH><TH>Fri</TH><TH>Sat</TH></TR>");
+									for (i = 0; i < 6; i++) {
+										// this loop writes one row of days Sun-Sat
+										document.write("<TR>");
+										for (j = 0; j < 7; j++) {
+											// this loop determines which dates to display and in which column
+											if ((i == 0 && j < dow1) || (day > Mdays[Month])) {
+												// this puts in blank cells at the beginning an end of the month
+												document.write("<TD><BR></TD>");
+											} else {
+												if (day == Date) {
+													// highlight the current day and display the date for this cell
+													document.write("<TD><FONT COLOR=red>" + day + "</FONT></TD>");
+												} else {
+													// display the date for this cell
+													document.write("<TD>" + day + "</TD>");
+												}
+												// increment day counter
+												day++;
+											}
+										}
+										// end of row; determine if more rows needed
+										document.write("</TR>");
+										if (day > Mdays[Month]) {
+											i = 6;
+										}
+									}
+									// end of table
+									document.write("</TABLE>");
+									// end hiding 
+									-->
+								</script>
+							</td>
+						</tr>
+					</table>
+				</td>
+		</table>
+		</td>
+		<th width="1047" height="300" valign="top" bgcolor="white"><br>
+			<table>
+				<tr>
+					<td>
+						<div><b>Manage Your User </b></div>
+						<hr />
+						<fieldset>
+							<legend align="center">
+								<div class="legend"><b>Update User Detail Below</b></div>
+							</legend>
+							<br>
+
+
+
+							<div id="body">
+								<div id="content">
+									<div class="login" style="background-color:white;">
+										<?php
+										$ctrl = $_REQUEST['key'];
+
+										$query = "SELECT * FROM user where Username='{$ctrl}'";
+										$result = mysqli_query($conn,$query);
+										while ($row = mysqli_fetch_array($result)) {
+											$row0 = $row[0];
+											$row1 = $row[1];
+											$row2 = $row[2];
+											$row3 = $row[3];
+											$row4 = $row[4];
+											$row5 = $row[5];
+											$row6 = $row[6];
+											$row7 = $row[7];
+											$row8 = $row[8];
+										}
+										?>
+										<form method="POST" action="edituser.php">
+
+											<div width="100%" align="right"><a href="viewuser.php"><img src="image/close.PNG" title="back to view user page"></a></div>
+
+											<table valign='top' align="center" style="width:500px; height:100px;border-radius:10px;background-color:#F5F5DC;border:2px solid blue" cellpadding="4">
+												<tr>
+													<td align="center" colspan="2">
+														<font face="times new roman" color="#336699" size="3"><b><img src="downlod/photo/<?php echo $row8; ?> " width='130' height='100'></b>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b>Id: </b>
+													</td>
+													<td><input name="Id" type="number" readonly="" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" value="<?php echo $row0 ?>" size="20" pattern="\w{1,10}" /></td>
+												</tr>
+
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b> First Name:</b>
+													</td>
+													<td><input name="fname" type="text" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" value="<?php echo $row1 ?>" size="30" pattern="\D{2,10}" readonly /></td>
+												</tr>
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b>Middle Name:</b>
+													</td>
+													<td><input type="text" readonly="" name="mname" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" pattern="(\w[{8,20})" value="<?php echo $row2 ?>" /></td< /tr>
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b> last Name:</b>
+													</td>
+													<td><input name="lname" type="text" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" value="<?php echo $row3 ?>" size="30" readonly pattern="\D{2,10}" required /></td>
+												</tr>
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b>Position:</b>
+													</td>
+													<td><input type="text" name="Position" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" pattern="(\w[{8,20})" value="<?php echo $row4 ?>" /></td>
+												</tr>
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b>Username:</b>
+													</td>
+													<td><input type="text" name="Username" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" pattern="(\w[{4,20})" value="<?php echo $row5 ?>" /></td>
+												</tr>
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b>Password:</b>
+													</td>
+													<td><input type="text" name="Password" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" pattern="\w{2,20}" value="<?php echo $row6 ?>" /></td>
+												</tr>
+
+												<tr>
+													<td>
+														<font face="times new roman" color="#336699" size="3"><b>status:</b>
+													</td>
+													<td><input type="number" readonly="" name="status" style="border:1px #480000 solid;width:144px;height:25px;background:#FFFFFF;border-radius:5px;" pattern="\w{1,1}" value="<?php echo $row7 ?>" /></td>
+												</tr>
+
+												<tr>
+													<td colspan=2 align='center'><b><input type='submit' name='update' value='Update' style="color:black;background:#6495ED; width:60; height:20;"></b>
+												</tr>
+					</td>
+				<tr>
+					<td width="190"></td>
+				</tr>
+			</table>
+			</form>
+
+			<?php
+			if (isset($_POST['update'])) {
+
+
+				$user_id = $_POST['Id'];
+				$fname1 = $_POST['fname'];
+				$mname1 = $_POST['mname'];
+				$lname1 = $_POST['lname'];
+				$poss = $_POST['Position'];
+				$mail = $_POST['Username'];
+				$phone = $_POST['Password'];
+				$status = $_POST['status'];
+
+				$update = mysqli_query($conn,"UPDATE `user` SET `id`='$user_id',`frist_name`='$fname1',`mname`='$mname1',`lname`='$lname1',`Position`='$poss',`Username`='$mail',`Password`='$phone',`status`='$status' WHERE id=' $user_id'");
+				if ($update) {
+
+					echo "<font color='green'<h4 align='top' style='width:480; height:40; background:red'><b>The data update succefully.</b></h4></font>";
+				}
+			}
+
+			?>
+
+			</div>
+
+
+			</td><!--center end-->
+
+
+			</div>
+			</div>
+
+
+			</td>
+			</tr>
+	</table>
+	</td>
+
+	<td width="50" height="100" valign="top">
+
+		<table border="0" bgcolor="white" width="257" height="436" cellspacing="0" cellpadding="5">
+			<tr>
+				<td align="right" bgcolor="white"><b></b></td>
+			</tr>
+			<tr>
+				<td bgcolor="#CCCCCC" align="center"><b><img src="image/i.png" width="80" height="50"> Mission</b></td>
+			</tr>
+			<tr>
+				<td align="left">The mission of durame city is that</td>
+			</tr>
+
+			<tr>
+				<td align="left"> to build or to create a civil servise </td>
+			</tr>
+			<tr>
+				<td align="left"> that serves the people that achives</td>
+			</tr>
+			<tr>
+				<td align="left"> the democratic government goals</td>
+			</tr>
+			<tr>
+				<td align="left"> policies and strategies with</td>
+			</tr>
+			<tr>
+				<td align="left"> full potential.</td>
+			</tr>
+
+			<tr>
+				<td align="left"></td>
+			</tr>
+			<tr>
+				<td align="center" bgcolor="#CCCCCC"> <b><img src="image/i.png" width="80" height="50">Vision</b></td>
+			</tr>
+			<tr>
+				<td align="left"> The vision of durame city is that,to </td>
+			</tr>
+			<tr>
+				<td align="left"> build a full potententaled citizens</td>
+			</tr>
+			<tr>
+				<td align="left">and a great human resourse who </td>
+			</tr>
+			<tr>
+				<td align="left">can achive the stated mission in</td>
+			</tr>
+			<tr>
+				<td align="left"> durame city.</td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			<tr>
+				<td align="right"><b></b></td>
+			</tr>
+			</tr>
+		</table>
+	</td>
+	</table>
+	</td>
+
+	</td>
+	</table>
+	</td>
+	</tr>
+	</tr>
+	<tr>
+		<td colspan="3" height="25">
+			<table border="0" align="left" width="92%" bgcolor="#CCCCCC" cellspacing="0">
+				<tr>
+					<td align="='center'">
+						<font face="Times New Roman" color="black"><b>DURAME CITY RESIDENCE RECORD MANAGMENT SYSTEM &copy; 2024 COPY RIGHT RESERVED !!!</b>
+						</font>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+</body>
+
+</html>
